@@ -1,0 +1,158 @@
+﻿using XmlDocument = Yuki.Features.Invoices.GetInvoicesFromYuki.Xml.XmlDocument;
+
+namespace Yuki.Features.Invoices.GetInvoicesFromYuki;
+
+[DisallowConcurrentExecution]
+public class YukiBackgroundJob : IJob
+{
+    private readonly ILogger<YukiBackgroundJob> _logger;
+    private readonly AppDbContext _dbContext;
+
+    public YukiBackgroundJob(ILogger<YukiBackgroundJob> logger, AppDbContext dbContext)
+    {
+        _logger = logger;
+        _dbContext = dbContext;
+    }
+
+    public async Task Execute(IJobExecutionContext context)
+    {
+        _logger.LogInformation("YukiBackgroundJob Executed on {UtcNow}!", DateTime.UtcNow);
+
+        var xmlDocument = await GetDocumentsFromYukiSoapClient();
+
+        if (xmlDocument is null)
+        {
+            _logger.LogError("No documents could be fetched from Yuki SOAP service!");
+            return;
+        }
+
+        await ProcessInvoices(xmlDocument);
+
+        await CleanUp(xmlDocument);
+        
+        _logger.LogInformation("YukiBackgroundJob Finished on {UtcNow}!", DateTime.UtcNow);
+    }
+    
+    private async Task<XmlDocuments?> GetDocumentsFromYukiSoapClient()
+    {
+        var client = new ArchiveSoapClient(ArchiveSoapClient.EndpointConfiguration.ArchiveSoap);
+        var sessionId = await client.AuthenticateAsync("cb4389d0-95e7-4866-b213-03d5b2ec280b");
+
+        var documents = await client.DocumentsInFolderAsync(sessionId, 1, DocumentSortOrder.CreatedAsc,
+            new DateTime(2023, 1, 1), new DateTime(2023, 12, 31), 10000, 0);
+
+        var serializer = new XmlSerializer(typeof(XmlDocuments));
+
+        using var reader = new XmlNodeReader(documents);
+        var result = (XmlDocuments?)serializer.Deserialize(reader);
+
+        _logger.LogInformation("{Total} Total Documents", result?.Document.Count);
+
+        return result;
+    }
+    
+    private async Task ProcessInvoices(XmlDocuments xmlDocument)
+    {
+        //todo: parse double to decimal and keep precision
+        
+        var createdCounter = 0;
+        var updatedCounter = 0;
+        
+        foreach (var document in xmlDocument.Document)
+        {
+            if (string.IsNullOrEmpty(document.ContactName))
+            {
+                _logger.LogInformation("Document with ID {DocumentId} has empty contact name", document.ID);
+                continue;
+            }
+            
+            var existingInvoice = await _dbContext
+                .Invoices
+                .Where(x => x.YukiKey == Guid.Parse(document.ID))
+                .SingleOrDefaultAsync();
+
+            if (existingInvoice is null)
+            {
+                _dbContext
+                    .Invoices
+                    .Add(new Invoice
+                    {
+                        Company = await GetCompany(document),
+                        YukiKey = Guid.Parse(document.ID),
+                        Subject = document.Subject,
+                        Amount = Convert.ToDecimal(document.Amount),
+                        VatAmount = Convert.ToDecimal(document.VatAmount),
+                        Type = InvoiceType.Purchase,
+                        Date = DateOnly.FromDateTime(document.DocumentDate),
+                    });
+
+                createdCounter++;
+            }
+            else
+            {
+                existingInvoice.Subject = document.Subject;
+                existingInvoice.Amount = Convert.ToDecimal(document.Amount);
+                existingInvoice.VatAmount = Convert.ToDecimal(document.VatAmount);
+                existingInvoice.Date = DateOnly.FromDateTime(document.DocumentDate);
+
+                updatedCounter++;
+            }
+        }
+        
+        await _dbContext.SaveChangesAsync();
+
+        _logger.LogInformation("{Created} Created Invoices", createdCounter);
+        _logger.LogInformation("{Updated} Updated Invoices", updatedCounter);
+    }
+
+    private async Task<Company> GetCompany(XmlDocument document)
+    {
+        var contactName = document.ContactName.Trim();
+        
+        var existingCompany = await _dbContext
+            .Companies
+            .Where(x => x.Name == contactName)
+            .SingleOrDefaultAsync();
+
+        Company? company;
+            
+        if (existingCompany is null)
+        {
+            company = new Company
+            {
+                Name = contactName
+            };
+        }
+        else
+        {
+            company = existingCompany;
+        }
+
+        return company;
+    }
+
+    private async Task CleanUp(XmlDocuments xmlDocument)
+    {
+        //todo: if company from deleted invoice has no more invoices, delete company as well
+        //todo: also clean up rules if company is deleted
+        
+        var allExistingInvoices = await _dbContext
+            .Invoices
+            .Select(i => i.YukiKey)
+            .ToListAsync();
+
+        var allDocuments = xmlDocument.Document
+            .Select(d => Guid.Parse(d.ID))
+            .ToList();
+
+        var invoicesToDelete = allExistingInvoices.Except(allDocuments);
+
+        var deletedInvoices = await _dbContext
+            .Invoices
+            .Where(i => invoicesToDelete.Contains(i.YukiKey))
+            .ExecuteDeleteAsync();
+
+        _logger.LogInformation("{InvoicesToDelete} Invoices To Delete", invoicesToDelete.Count());
+        _logger.LogInformation("{DeletedInvoices} Deleted Invoices", deletedInvoices);
+    }
+}
