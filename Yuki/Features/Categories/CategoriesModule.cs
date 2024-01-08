@@ -1,6 +1,4 @@
-﻿using Yuki.Features.Categories.CreateCategory;
-
-namespace Yuki.Features.Categories;
+﻿namespace Yuki.Features.Categories;
 
 public class CategoriesModule : CarterModule
 {
@@ -11,5 +9,6 @@ public class CategoriesModule : CarterModule
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapCreateCategoryEndpoint();
+        app.MapGetDeepestCategoriesEndpoint();
     }
 }

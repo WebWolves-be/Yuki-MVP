@@ -10,6 +10,13 @@ global using Yuki.Common.Helpers;
 global using Yuki.Features.Invoices.GetInvoicesFromYuki;
 global using Yuki.Features.Invoices.GetInvoicesFromYuki.Xml;
 
+global using Yuki.Features.Categories.CreateCategory;
+global using Yuki.Features.Categories.GetDeepestCategories;
+global using Yuki.Features.Categories.GetDeepestCategories.Model;
+
+global using Yuki.Features.Companies.GetAllCompanies.Model;
+global using Yuki.Features.Companies.GetAllCompanies;
+
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore.Diagnostics;
