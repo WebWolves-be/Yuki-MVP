@@ -6,12 +6,11 @@ public class Match : IBaseEntity
 
     public int CategoryId { get; set; }
     public Category Category { get; set; }
+    
+    public int InvoiceId { get; set; }
+    public Invoice Invoice { get; set; }
 
-    public int? CompanyId { get; set; }
-    public Company? Company { get; set; }
-
-    public int? InvoiceId { get; set; }
-    public Invoice? Invoice { get; set; }
+    public bool IsExceptionFromRule { get; set; }
     
     public DateTime? LastModified { get; set; }
 }

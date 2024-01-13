@@ -7,11 +7,13 @@ public class YukiBackgroundJob : IJob
 {
     private readonly ILogger<YukiBackgroundJob> _logger;
     private readonly AppDbContext _dbContext;
+    private readonly IMediator _mediator;
 
-    public YukiBackgroundJob(ILogger<YukiBackgroundJob> logger, AppDbContext dbContext)
+    public YukiBackgroundJob(ILogger<YukiBackgroundJob> logger, AppDbContext dbContext, IMediator mediator)
     {
         _logger = logger;
         _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -29,6 +31,8 @@ public class YukiBackgroundJob : IJob
         await ProcessInvoices(xmlDocument);
 
         await CleanUp(xmlDocument);
+
+        await _mediator.Publish(new AutoMatchingNotification());
         
         _logger.LogInformation("YukiBackgroundJob Finished on {UtcNow}!", DateTime.UtcNow);
     }

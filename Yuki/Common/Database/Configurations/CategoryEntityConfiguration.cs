@@ -1,12 +1,16 @@
 ﻿namespace Yuki.Common.Database.Configurations;
 
-public class CategoryEntityConfiguration : BaseEntityConfiguration<Category>
+public sealed class CategoryEntityConfiguration : BaseEntityConfiguration<Category>
 {
     public override void Configure(EntityTypeBuilder<Category> builder)
     {
         base.Configure(builder);
 
         builder.ToTable("Categories");
+        
+        builder
+            .Property(c => c.Year)
+            .IsRequired();
         
         builder
             .Property(c => c.Name)
@@ -18,6 +22,13 @@ public class CategoryEntityConfiguration : BaseEntityConfiguration<Category>
             .WithMany(c => c.SubCategories)
             .HasForeignKey(c => c.ParentId)
             .IsRequired(false)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        builder
+            .HasMany<Match>(c => c.Matches)
+            .WithOne(m => m.Category)
+            .HasForeignKey(m => m.CategoryId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

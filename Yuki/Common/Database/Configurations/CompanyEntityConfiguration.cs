@@ -1,6 +1,6 @@
 ﻿namespace Yuki.Common.Database.Configurations;
 
-public class CompanyEntityConfiguration : BaseEntityConfiguration<Company>
+public sealed class CompanyEntityConfiguration : BaseEntityConfiguration<Company>
 {
     public override void Configure(EntityTypeBuilder<Company> builder)
     {
@@ -12,5 +12,15 @@ public class CompanyEntityConfiguration : BaseEntityConfiguration<Company>
             .Property(c => c.Name)
             .HasMaxLength(100)
             .IsRequired();
+
+        builder
+            .Property(c => c.Alias)
+            .HasMaxLength(100);
+
+        builder
+            .HasMany<Invoice>(c => c.Invoices)
+            .WithOne(i => i.Company)
+            .HasForeignKey(i => i.CompanyId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

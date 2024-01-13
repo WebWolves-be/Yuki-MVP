@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yuki.Common.Database;
 
@@ -11,9 +12,11 @@ using Yuki.Common.Database;
 namespace Yuki.Common.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110203852_AddIndexOnInvoiceIdInMatchesTable")]
+    partial class AddIndexOnInvoiceIdInMatchesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,10 +62,6 @@ namespace Yuki.Common.Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Alias")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -96,9 +95,6 @@ namespace Yuki.Common.Database.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("MatchId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -137,13 +133,11 @@ namespace Yuki.Common.Database.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoiceId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsExceptionFromRule")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<int?>("InvoiceId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -153,37 +147,13 @@ namespace Yuki.Common.Database.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("InvoiceId")
+                        .IsUnique()
+                        .HasFilter("[InvoiceId] IS NOT NULL");
+
+                    b.HasIndex("CompanyId", "CategoryId")
                         .IsUnique();
 
                     b.ToTable("Matches", (string)null);
-                });
-
-            modelBuilder.Entity("Yuki.Common.Entities.Rule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
-
-                    b.HasIndex("CompanyId")
-                        .IsUnique();
-
-                    b.ToTable("Rules", (string)null);
                 });
 
             modelBuilder.Entity("Yuki.Common.Entities.Category", b =>
@@ -191,7 +161,7 @@ namespace Yuki.Common.Database.Migrations
                     b.HasOne("Yuki.Common.Entities.Category", "Parent")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Parent");
                 });
@@ -212,35 +182,25 @@ namespace Yuki.Common.Database.Migrations
                     b.HasOne("Yuki.Common.Entities.Category", "Category")
                         .WithMany("Matches")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Yuki.Common.Entities.Invoice", "Invoice")
-                        .WithOne("Match")
-                        .HasForeignKey("Yuki.Common.Entities.Match", "InvoiceId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Invoice");
-                });
-
-            modelBuilder.Entity("Yuki.Common.Entities.Rule", b =>
-                {
-                    b.HasOne("Yuki.Common.Entities.Category", "Category")
-                        .WithOne()
-                        .HasForeignKey("Yuki.Common.Entities.Rule", "CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Yuki.Common.Entities.Company", "Company")
-                        .WithOne()
-                        .HasForeignKey("Yuki.Common.Entities.Rule", "CompanyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Yuki.Common.Entities.Invoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
 
                     b.Navigation("Company");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("Yuki.Common.Entities.Category", b =>
@@ -253,11 +213,6 @@ namespace Yuki.Common.Database.Migrations
             modelBuilder.Entity("Yuki.Common.Entities.Company", b =>
                 {
                     b.Navigation("Invoices");
-                });
-
-            modelBuilder.Entity("Yuki.Common.Entities.Invoice", b =>
-                {
-                    b.Navigation("Match");
                 });
 #pragma warning restore 612, 618
         }

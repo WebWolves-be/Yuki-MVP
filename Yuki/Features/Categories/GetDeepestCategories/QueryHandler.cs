@@ -18,7 +18,7 @@ public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
             .Where(c => c.SubCategories.Count == 0)
             .Select(c => new CategoryModel(c.Id, c.Name))
             .ToListAsync(cancellationToken);
-
+        
         return Result<QueryResult>.Success(new QueryResult(categories));
     }
 }

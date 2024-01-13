@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yuki.Common.Database;
 
@@ -11,9 +12,11 @@ using Yuki.Common.Database;
 namespace Yuki.Common.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113105901_UpdateTables")]
+    partial class UpdateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,6 +101,7 @@ namespace Yuki.Common.Database.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("MatchId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Subject")
@@ -119,6 +123,8 @@ namespace Yuki.Common.Database.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("MatchId");
 
                     b.HasIndex("YukiKey")
                         .IsUnique();
@@ -152,9 +158,6 @@ namespace Yuki.Common.Database.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("InvoiceId")
-                        .IsUnique();
-
                     b.ToTable("Matches", (string)null);
                 });
 
@@ -183,6 +186,9 @@ namespace Yuki.Common.Database.Migrations
                     b.HasIndex("CompanyId")
                         .IsUnique();
 
+                    b.HasIndex("CompanyId", "CategoryId")
+                        .IsUnique();
+
                     b.ToTable("Rules", (string)null);
                 });
 
@@ -204,7 +210,15 @@ namespace Yuki.Common.Database.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Yuki.Common.Entities.Match", "Match")
+                        .WithOne("Invoice")
+                        .HasForeignKey("Yuki.Common.Entities.Invoice", "MatchId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("Match");
                 });
 
             modelBuilder.Entity("Yuki.Common.Entities.Match", b =>
@@ -215,13 +229,7 @@ namespace Yuki.Common.Database.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Yuki.Common.Entities.Invoice", "Invoice")
-                        .WithOne("Match")
-                        .HasForeignKey("Yuki.Common.Entities.Match", "InvoiceId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("Yuki.Common.Entities.Rule", b =>
@@ -255,9 +263,10 @@ namespace Yuki.Common.Database.Migrations
                     b.Navigation("Invoices");
                 });
 
-            modelBuilder.Entity("Yuki.Common.Entities.Invoice", b =>
+            modelBuilder.Entity("Yuki.Common.Entities.Match", b =>
                 {
-                    b.Navigation("Match");
+                    b.Navigation("Invoice")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

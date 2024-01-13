@@ -1,6 +1,6 @@
 ﻿namespace Yuki.Common.Database.Configurations;
 
-public class RuleEntityConfiguration : BaseEntityConfiguration<Rule>
+public sealed class RuleEntityConfiguration : BaseEntityConfiguration<Rule>
 {
     public override void Configure(EntityTypeBuilder<Rule> builder)
     {
@@ -9,21 +9,15 @@ public class RuleEntityConfiguration : BaseEntityConfiguration<Rule>
         builder.ToTable("Rules");
         
         builder
-            .HasOne(c => c.Company)
-            .WithMany()
-            .HasForeignKey(i => i.CompanyId)
-            .OnDelete(DeleteBehavior.Cascade)
+            .HasOne(r => r.Company)
+            .WithOne()
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
-
+        
         builder
-            .HasOne(c => c.Category)
-            .WithMany()
-            .HasForeignKey(i => i.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade)
+            .HasOne(r => r.Category)
+            .WithOne()
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
-
-        builder
-            .HasIndex(c => new { c.CompanyId, c.CategoryId })
-            .IsUnique();
     }
 }

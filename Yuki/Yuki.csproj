@@ -21,12 +21,68 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\Rules" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.*" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Features\Companies\UpdateCompany\CommandResult.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\UpdateCompany\CommandHandler.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\UpdateCompany\Request.cs">
+      <DependentUpon>Endpoint.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\GetAllCompanies\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\GetAllCompanies\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\CreateCategory\CommandResult.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\CreateCategory\CommandHandler.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\CreateCategory\Response.cs">
+      <DependentUpon>Endpoint.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\CreateCategory\Request.cs">
+      <DependentUpon>Endpoint.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\CreateCategory\Validator.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\GetDeepestCategories\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\GetDeepestCategories\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Rules\CreateRule\CommandResult.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Rules\CreateRule\CommandHandler.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Rules\CreateRule\Request.cs">
+      <DependentUpon>Endpoint.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Matches\Notifications\AutoMatchingNotificationHandler.cs">
+      <DependentUpon>AutoMatchingNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Matches\Notifications\CreateMatchesNotificationHandler.cs">
+      <DependentUpon>CreateMatchesNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\GetAllCompaniesWithoutRule\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Companies\GetAllCompaniesWithoutRule\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

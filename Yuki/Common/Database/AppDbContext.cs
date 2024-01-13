@@ -19,5 +19,7 @@ public class AppDbContext : DbContext
     
     public DbSet<Invoice> Invoices { get; set; } = null!;
     
+    public DbSet<Match> Matches { get; set; } = null!;
+    
     public DbSet<Rule> Rules { get; set; } = null!;
 }

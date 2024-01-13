@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yuki.Common.Database;
 
@@ -11,9 +12,11 @@ using Yuki.Common.Database;
 namespace Yuki.Common.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113112114_UpdateInvoicesMatchesRelationshipV3")]
+    partial class UpdateInvoicesMatchesRelationshipV3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +140,7 @@ namespace Yuki.Common.Database.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoiceId")
+                    b.Property<int?>("InvoiceId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsExceptionFromRule")
@@ -153,7 +156,8 @@ namespace Yuki.Common.Database.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("InvoiceId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[InvoiceId] IS NOT NULL");
 
                     b.ToTable("Matches", (string)null);
                 });
@@ -181,6 +185,9 @@ namespace Yuki.Common.Database.Migrations
                         .IsUnique();
 
                     b.HasIndex("CompanyId")
+                        .IsUnique();
+
+                    b.HasIndex("CompanyId", "CategoryId")
                         .IsUnique();
 
                     b.ToTable("Rules", (string)null);

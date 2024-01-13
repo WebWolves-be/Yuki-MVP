@@ -10,10 +10,16 @@ public sealed class InvoiceEntityConfiguration : BaseEntityConfiguration<Invoice
         
         builder
             .HasOne<Company>(i => i.Company)
-            .WithMany()
+            .WithMany(c => c.Invoices)
             .HasForeignKey(i => i.CompanyId)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .HasOne<Match>(i => i.Match)
+            .WithOne(m => m.Invoice)
+            .HasForeignKey<Match>(m => m.InvoiceId)
+            .IsRequired(false);
         
         builder
             .Property(i => i.YukiKey)

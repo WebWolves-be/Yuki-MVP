@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yuki.Common.Database;
 
@@ -11,9 +12,11 @@ using Yuki.Common.Database;
 namespace Yuki.Common.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113112339_UpdateInvoicesMatchesRelationshipV4")]
+    partial class UpdateInvoicesMatchesRelationshipV4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,6 +184,9 @@ namespace Yuki.Common.Database.Migrations
                         .IsUnique();
 
                     b.HasIndex("CompanyId")
+                        .IsUnique();
+
+                    b.HasIndex("CompanyId", "CategoryId")
                         .IsUnique();
 
                     b.ToTable("Rules", (string)null);

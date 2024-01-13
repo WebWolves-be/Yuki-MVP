@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace Yuki.Common.Helpers;
+﻿namespace Yuki.Common.Helpers;
 
 public class Result<T> where T : class
 {

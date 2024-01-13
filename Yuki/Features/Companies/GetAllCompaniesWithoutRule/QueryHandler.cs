@@ -1,4 +1,4 @@
-﻿namespace Yuki.Features.Companies.GetAllCompanies;
+﻿namespace Yuki.Features.Companies.GetAllCompaniesWithoutRule;
 
 public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
 {
@@ -14,6 +14,7 @@ public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
         var companies = await _dbContext
             .Companies
             .AsNoTracking()
+            .Where(c => _dbContext.Rules.All(r => r.CompanyId != c.Id))
             .Select(c => new CompanyModel(c.Id, c.Name, c.Alias))
             .ToListAsync(cancellationToken);
 

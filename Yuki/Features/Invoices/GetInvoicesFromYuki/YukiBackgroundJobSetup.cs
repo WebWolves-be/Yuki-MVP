@@ -18,6 +18,7 @@ public class YukiBackgroundJobSetup : IConfigureOptions<QuartzOptions>
         //         .WithDailyTimeIntervalSchedule(triggerBuilder =>
         //         {
         //             triggerBuilder.OnEveryDay();
-        //         }));
+        //         })
+        //     );
     }
 }
