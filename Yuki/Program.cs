@@ -2,12 +2,14 @@ var assembly = typeof(Program).Assembly;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCarter();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.CustomSchemaIds(type => type.ToString());
 });
 
-builder.Services.AddCarter();
 builder.Services.AddEfCore();
 builder.Services.AddQuartz();
 
