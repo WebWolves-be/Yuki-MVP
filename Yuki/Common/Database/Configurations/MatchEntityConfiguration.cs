@@ -16,6 +16,12 @@ public sealed class MatchEntityConfiguration : BaseEntityConfiguration<Match>
             .IsRequired();
         
         builder
+            .HasOne(m => m.Invoice)
+            .WithOne(i => i.Match)
+            .HasForeignKey<Match>(m => m.InvoiceId)
+            .IsRequired();
+        
+        builder
             .Property(m => m.IsExceptionFromRule)
             .HasDefaultValue(false)
             .IsRequired();

@@ -5,14 +5,13 @@ public class Invoice : IBaseEntity
     public int Id { get; set; }
 
     public int CompanyId { get; set; }
-    public Company Company { get; set; }
-
-    public int? MatchId { get; set; }
+    public Company Company { get; set; } = null!;
+    
     public Match? Match { get; set; }
 
     public Guid YukiKey { get; set; }
 
-    public string Subject { get; set; }
+    public string Subject { get; set; } = null!;
 
     public decimal Amount { get; set; }
 

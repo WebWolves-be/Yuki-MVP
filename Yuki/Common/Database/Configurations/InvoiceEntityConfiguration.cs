@@ -14,12 +14,6 @@ public sealed class InvoiceEntityConfiguration : BaseEntityConfiguration<Invoice
             .HasForeignKey(i => i.CompanyId)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
-
-        builder
-            .HasOne<Match>(i => i.Match)
-            .WithOne(m => m.Invoice)
-            .HasForeignKey<Match>(m => m.InvoiceId)
-            .IsRequired(false);
         
         builder
             .Property(i => i.YukiKey)

@@ -6,7 +6,7 @@ public class Category : IBaseEntity
 
     public int Year { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     public int? ParentId { get; set; }
     public Category? Parent { get; set; }
