@@ -9,7 +9,8 @@ public class CategoriesModule : CarterModule
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapCreateCategoryEndpoint();
+        app.MapGetAllCategoriesForTreeViewEndpoint();
         app.MapGetDeepestCategoriesEndpoint();
+        app.MapCreateCategoryEndpoint();
     }
 }

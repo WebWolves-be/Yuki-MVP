@@ -14,6 +14,8 @@ global using Yuki.Features.Invoices.GetInvoicesFromYuki.Xml;
 global using Yuki.Features.Categories.CreateCategory;
 global using Yuki.Features.Categories.GetDeepestCategories;
 global using Yuki.Features.Categories.GetDeepestCategories.Model;
+global using Yuki.Features.Categories.GetAllCategoriesForTreeView.Model;
+global using Yuki.Features.Categories.GetAllCategoriesForTreeView;
 
 global using Yuki.Features.Companies.GetAllCompanies.Model;
 global using Yuki.Features.Companies.GetAllCompanies;

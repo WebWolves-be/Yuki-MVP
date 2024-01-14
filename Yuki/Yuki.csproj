@@ -84,5 +84,14 @@
     <Compile Update="Features\Companies\GetAllCompaniesWithoutRule\QueryHandler.cs">
       <DependentUpon>Query.cs</DependentUpon>
     </Compile>
+    <Compile Update="Features\Categories\GetAllCategoriesForTreeView\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\GetAllCategoriesForTreeView\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\Matches\Model" />
   </ItemGroup>
 </Project>

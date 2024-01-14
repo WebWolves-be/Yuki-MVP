@@ -1,0 +1,9 @@
+.overview {
+  display: flex;
+  gap: 25px;
+  padding: 15px;
+
+  &__categories {
+    flex: 1;
+  }
+}

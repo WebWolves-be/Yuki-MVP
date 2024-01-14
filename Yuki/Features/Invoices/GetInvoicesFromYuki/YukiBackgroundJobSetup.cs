@@ -17,11 +17,11 @@ public class YukiBackgroundJobSetup : IConfigureOptions<QuartzOptions>
                 .ForJob(jobKey)
                 .WithDailyTimeIntervalSchedule(triggerBuilder =>
                 {
-                    triggerBuilder.OnEveryDay();
+                    //triggerBuilder.OnEveryDay();
                     
-                    // triggerBuilder.WithIntervalInHours(24)
-                    //     .OnEveryDay()
-                    //     .StartingDailyAt(new TimeOfDay(5, 0, 0));
+                    triggerBuilder.WithIntervalInHours(24)
+                        .OnEveryDay()
+                        .StartingDailyAt(new TimeOfDay(5, 0, 0));
                 })
             );
     }
