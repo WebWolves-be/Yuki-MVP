@@ -9,4 +9,5 @@ public record CategoryTreeNodeModel(
     List<MatchTreeNodeModel> Matches)
 {
     public decimal TotalAmount => Matches.Sum(x => x.Amount + x.VatAmount);
+    public decimal TotalAmountOfChildren => Children.Sum(x => x.TotalAmountOfChildren + x.TotalAmount);
 }

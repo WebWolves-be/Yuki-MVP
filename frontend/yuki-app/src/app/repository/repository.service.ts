@@ -21,4 +21,18 @@ export class RepositoryService {
         })
       )
   }
+
+  saveCategory(name: string, parentId: number | null): Observable<boolean> {
+    return this.httpClient.post(`${this.baseUrl}/categories`, {name: name, parentId: parentId})
+      .pipe(
+        map(response => {
+          console.log(response);
+          return true
+        }),
+        catchError(err => {
+          alert("OOPS, HTTP ALERT!");
+          return of(false);
+        })
+      );
+  }
 }

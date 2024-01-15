@@ -1,7 +1,9 @@
 <div class="categories">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Categorieën</mat-card-title>
+      <mat-card-title>
+        Categorieën
+      </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="categories__tree">
@@ -9,7 +11,7 @@
         <!-- There is inline padding applied to this node using styles.
           This padding value depends on the mat-icon-button width. -->
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-          {{node.name}}
+          {{node.name}} € {{node.totalAmount}}
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
@@ -20,7 +22,7 @@
                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
               </mat-icon>
             </button>
-            {{node.name}}
+            {{node.name}} € {{node.totalAmountOfChildren}}
           </div>
           <!-- There is inline padding applied to this div using styles.
               This padding value depends on the mat-icon-button width.  -->
@@ -31,5 +33,11 @@
         </mat-nested-tree-node>
       </mat-tree>
     </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="onAddCategory(null)">
+        <mat-icon>add</mat-icon>
+        Categorie
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>

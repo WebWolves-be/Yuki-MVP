@@ -6,7 +6,7 @@ import {StateService} from "../state/state.service";
 export class FacadeService {
 
   categoryTreeNodes$ = this.state.categoryTreeNodes$;
-  
+
   constructor(
     public repo: RepositoryService,
     public state: StateService) {
@@ -14,8 +14,13 @@ export class FacadeService {
 
   getCategoryTreeNodes(): void {
     this.repo.getCategoryTreeNodes().subscribe(categoryTreeNodes => {
-      console.log(categoryTreeNodes);
       this.state.setCategoryTreeNodes(categoryTreeNodes);
+    })
+  }
+
+  saveCategory(name: string, parentId: number | null): void {
+    this.repo.saveCategory(name, parentId).subscribe(success => {
+      console.log(success);
     })
   }
 }

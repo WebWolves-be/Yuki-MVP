@@ -5,34 +5,10 @@ import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {FacadeService} from "../../facade/facade.service";
-
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
-  },
-  {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli', children: [{name: 'Test'}]},
-          {name: 'Brussels sprouts'},
-        ],
-      },
-      {
-        name: 'Orange',
-        children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
-      },
-    ],
-  },
-];
+import {CategoryTreeNode} from "../../model/category-tree-node.interface";
+import {AsyncPipe} from "@angular/common";
+import {MatDialog} from "@angular/material/dialog";
+import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-dialog.component";
 
 @Component({
   selector: 'app-categories',
@@ -42,23 +18,40 @@ const TREE_DATA: FoodNode[] = [
     MatCardModule,
     MatTreeModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    AsyncPipe
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent implements OnInit {
-  treeControl = new NestedTreeControl<FoodNode>((node) => node.children);
-  dataSource = new MatTreeNestedDataSource<FoodNode>();
 
-  constructor(public facade: FacadeService) {
-    this.dataSource.data = TREE_DATA;
+  categoryTreeNodes$ = this.facade.categoryTreeNodes$;
+
+  treeControl = new NestedTreeControl<CategoryTreeNode>((node) => node.children);
+  dataSource = new MatTreeNestedDataSource<CategoryTreeNode>();
+
+  constructor(public facade: FacadeService, public dialog: MatDialog) {
   }
 
-  hasChild = (_: number, node: FoodNode) =>
+  hasChild = (_: number, node: CategoryTreeNode) =>
     !!node.children && node.children.length > 0;
 
   ngOnInit(): void {
     this.facade.getCategoryTreeNodes();
+
+    this.categoryTreeNodes$.subscribe(categoryTreeNodes => {
+      if (categoryTreeNodes) {
+        this.dataSource.data = categoryTreeNodes;
+      }
+    })
+  }
+
+  onAddCategory(parentId: number | null): void {
+    this.dialog.open(AddCategoryDialogComponent, {
+      data: {
+        parentId: parentId,
+      },
+    });
   }
 }

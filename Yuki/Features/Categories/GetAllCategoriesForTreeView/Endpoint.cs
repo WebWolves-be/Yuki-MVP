@@ -7,6 +7,6 @@ public static class Endpoint
         {
             var result = await mediator.Send(new Query());
 
-            return Results.Ok(result.Value);
+            return Results.Ok(result.Value?.Categories);
         });
 }

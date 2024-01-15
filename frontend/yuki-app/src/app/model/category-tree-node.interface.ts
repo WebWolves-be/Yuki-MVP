@@ -6,6 +6,7 @@ export interface CategoryTreeNode {
   parentId: number;
   companyName: string | null;
   totalAmount: number;
+  TotalAmountOfChildren: number;
   children: CategoryTreeNode[];
   matches: MatchTreeNode[];
 }
