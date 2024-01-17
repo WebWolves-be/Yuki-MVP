@@ -1,0 +1,27 @@
+<div class="node">
+  <div class="node__title">
+    <div class="node__name">
+      {{categoryTreeNode.name}}
+    </div>
+    <div class="node__amount">
+      €
+      <ng-container *ngIf="expandable">{{categoryTreeNode.totalAmountOfChildren}}</ng-container>
+      <ng-container *ngIf="!expandable">{{categoryTreeNode.totalAmount}}</ng-container>
+    </div>
+  </div>
+  <div class="node__menu">
+    <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+      <span>Toevoegen</span>
+    </button>
+    <button mat-menu-item (click)="onDelete()">
+      <mat-icon>delete_forever</mat-icon>
+      <span>Verwijderen</span>
+    </button>
+  </mat-menu>
+</div>

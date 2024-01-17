@@ -1,8 +1,9 @@
 <h2 mat-dialog-title>Toevoegen categorie</h2>
 <mat-dialog-content class="mat-typography">
-  <p *ngIf="!data.parentId">Een categorie toevoegen op het hoogste niveau</p>
+  <p *ngIf="!data.name">Een categorie toevoegen op het hoogste niveau</p>
+  <p *ngIf="data.name">Een categorie toevoegen onder de categorie <b>{{data.name}}</b></p>
   <form [formGroup]="form">
-    <mat-form-field appearance="outline" class="width-100">
+    <mat-form-field appearance="outline" class="width-100" color="accent">
       <mat-label>Naam</mat-label>
       <input matInput placeholder="Vul een naam in..." formControlName="name">
       <mat-hint align="end">{{form.controls.name.value?.length}}/100</mat-hint>
@@ -14,7 +15,7 @@
     <mat-icon>cancel</mat-icon>
     Annuleren
   </button>
-  <button mat-flat-button color="primary" cdkFocusInitial (click)="onSave()" [disabled]="form.invalid">
+  <button mat-flat-button color="accent" cdkFocusInitial (click)="onSave()" [disabled]="form.invalid">
     <mat-icon>save</mat-icon>
     Opslaan
   </button>

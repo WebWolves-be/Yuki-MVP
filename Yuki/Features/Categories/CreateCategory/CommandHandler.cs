@@ -20,7 +20,8 @@ public class CommandHandler : IRequestHandler<Command, Result<CommandResult>>
             return Result<CommandResult>.Failure(validationResult);
         }
 
-        if (await _dbContext.Categories.AnyAsync(c => c.Name == request.Name, cancellationToken: cancellationToken))
+        if (await _dbContext.Categories.AnyAsync(c => c.ParentId == request.ParentId 
+                                                      && c.Name == request.Name, cancellationToken: cancellationToken))
         {
             return Result<CommandResult>.Failure(Errors.NameAlreadyExists);
         }

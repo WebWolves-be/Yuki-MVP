@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {RepositoryService} from "../repository/repository.service";
 import {StateService} from "../state/state.service";
+import {Observable} from "rxjs";
 
 @Injectable({providedIn: "root"})
 export class FacadeService {
@@ -18,9 +19,7 @@ export class FacadeService {
     })
   }
 
-  saveCategory(name: string, parentId: number | null): void {
-    this.repo.saveCategory(name, parentId).subscribe(success => {
-      console.log(success);
-    })
+  saveCategory(name: string, parentId: number | null): Observable<boolean> {
+    return this.repo.saveCategory(name, parentId);
   }
 }

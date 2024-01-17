@@ -9,6 +9,8 @@ import {CategoryTreeNode} from "../../model/category-tree-node.interface";
 import {AsyncPipe} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-dialog.component";
+import {MatMenuModule} from "@angular/material/menu";
+import {CategoryTreeNodeComponent} from "../category-tree-node/category-tree-node.component";
 
 @Component({
   selector: 'app-categories',
@@ -19,7 +21,9 @@ import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-di
     MatTreeModule,
     MatIconModule,
     MatButtonModule,
-    AsyncPipe
+    AsyncPipe,
+    MatMenuModule,
+    CategoryTreeNodeComponent
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'

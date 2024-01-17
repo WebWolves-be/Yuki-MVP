@@ -1,0 +1,22 @@
+:host {
+  width: 100%;
+}
+
+.node {
+  display: flex;
+  justify-content: space-between;
+
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__amount {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: #ff4081;
+  }
+}

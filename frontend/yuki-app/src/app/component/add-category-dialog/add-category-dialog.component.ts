@@ -4,6 +4,7 @@ import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
+  MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
@@ -13,6 +14,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {FacadeService} from "../../facade/facade.service";
+import {SnackBarService} from "../../service/snack-bar.service";
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -40,12 +42,20 @@ export class AddCategoryDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public facade: FacadeService) {
+    public dialogRef: MatDialogRef<AddCategoryDialogComponent>,
+    public facade: FacadeService,
+    private snackBar: SnackBarService) {
   }
 
   onSave(): void {
     if (this.form.controls.name.value) {
-      this.facade.saveCategory(this.form.controls.name.value, this.data.parentId);
+      this.facade.saveCategory(this.form.controls.name.value, this.data.parentId).subscribe(success => {
+        if (success) {
+          this.snackBar.openSuccess("Categorie is toegevoegd!")
+          this.facade.getCategoryTreeNodes();
+          this.dialogRef.close();
+        }
+      });
     }
   }
 }

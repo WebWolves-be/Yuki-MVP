@@ -90,6 +90,12 @@
     <Compile Update="Features\Categories\GetAllCategoriesForTreeView\QueryHandler.cs">
       <DependentUpon>Query.cs</DependentUpon>
     </Compile>
+    <Compile Update="Features\Categories\DeleteCategory\CommandResult.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Categories\DeleteCategory\CommandHandler.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\Matches\Model" />
