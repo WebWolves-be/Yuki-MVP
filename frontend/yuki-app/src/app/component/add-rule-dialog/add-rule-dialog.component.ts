@@ -72,6 +72,7 @@ export class AddRuleDialogComponent implements OnInit, OnDestroy {
             this.snackBar.openSuccess("Bedrijf is gelinked!")
             this.facade.getCategoryTreeNodes();
             this.facade.getCompaniesWithoutRule();
+            this.facade.getInvoices();
             this.dialogRef.close();
           }
         });

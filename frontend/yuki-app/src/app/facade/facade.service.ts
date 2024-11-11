@@ -9,6 +9,7 @@ export class FacadeService {
   categoryTreeNodes$ = this.state.categoryTreeNodes$;
   categoryPaths$ = this.state.categoryPaths$;
   companiesWithoutRule$ = this.state.companiesWithoutRule$;
+  invoices$ = this.state.invoices$;
 
   constructor(
     public repo: RepositoryService,
@@ -43,5 +44,11 @@ export class FacadeService {
 
   addRule(companyId: number, categoryId: number): Observable<boolean> {
     return this.repo.addRule(companyId, categoryId);
+  }
+
+  getInvoices(): void {
+    this.repo.getInvoices().subscribe(invoices => {
+      this.state.setInvoices(invoices);
+    })
   }
 }

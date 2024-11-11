@@ -8,6 +8,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatDialog} from "@angular/material/dialog";
 import {AddRuleDialogComponent} from "../add-rule-dialog/add-rule-dialog.component";
 import {Company} from "../../model/company.interface";
+import {MatChipsModule} from "@angular/material/chips";
 
 @Component({
   selector: 'app-companies',
@@ -19,7 +20,8 @@ import {Company} from "../../model/company.interface";
     AsyncPipe,
     NgForOf,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatChipsModule
   ],
   templateUrl: './companies.component.html',
   styleUrl: './companies.component.scss'

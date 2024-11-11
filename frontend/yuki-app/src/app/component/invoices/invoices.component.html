@@ -1,11 +1,59 @@
 <div class="invoices">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Facturen</mat-card-title>
+      <mat-card-title>
+        Facturen
+        <mat-chip>{{ (invoices$ | async)?.length }}</mat-chip>
+      </mat-card-title>
       <mat-card-subtitle>Deze facturen moeten nog gelinked worden aan een categorie</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <table mat-table [dataSource]="(invoices$ | async) ?? []">
 
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef>Bedrijf</th>
+          <td mat-cell *matCellDef="let invoice"> {{ invoice.companyName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef>Onderwerp</th>
+          <td mat-cell *matCellDef="let invoice"> {{ invoice.subject }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Bedrag</th>
+          <td mat-cell *matCellDef="let invoice"> € {{ invoice.amount | number:'1.2-2':'nl-BE' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Datum</th>
+          <td mat-cell *matCellDef="let invoice">{{ invoice.date | date:'dd-MM-yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let invoice">
+            <div class="node__menu">
+              <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onShow(invoice)">
+                <mat-icon>search</mat-icon>
+                Bekijken
+              </button>
+              <button mat-menu-item (click)="onLink(invoice)">
+                <mat-icon>add_link</mat-icon>
+                Linken
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let invoice; columns: displayedColumns;"></tr>
+      </table>
 
     </mat-card-content>
   </mat-card>

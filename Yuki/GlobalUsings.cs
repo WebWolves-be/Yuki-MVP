@@ -46,3 +46,4 @@ global using MediatR;
 
 global using FluentValidation;
 global using FluentValidation.Results;
+global using Yuki.Features.Matches.CreateMatch;

@@ -7,6 +7,8 @@ import {Company} from "../model/company.interface";
 import {CompanyResponse} from "../model/company-reponse.interface";
 import {CategoryPath} from "../model/category-path.interface";
 import {CategoryPathResponse} from "../model/category-path-response.interface";
+import {Invoice} from "../model/invoice.interface";
+import {InvoicesResponse} from "../model/invoices-response.interface";
 
 @Injectable({providedIn: "root"})
 export class RepositoryService {
@@ -85,6 +87,13 @@ export class RepositoryService {
       );
   }
 
-  // getInvoices(): Observable<Invoice[]> {
-  // }
+  getInvoices(): Observable<Invoice[]> {
+    return this.httpClient.get<InvoicesResponse>(`${this.baseUrl}/invoices`).pipe(
+      map(response => response.invoices as Invoice[]),
+      catchError(err => {
+        alert("OOPS, HTTP ALERT!");
+        return of([]);
+      })
+    );
+  }
 }

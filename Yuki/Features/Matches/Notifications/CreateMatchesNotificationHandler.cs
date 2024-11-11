@@ -1,22 +1,15 @@
 ﻿namespace Yuki.Features.Matches.Notifications;
 
-public class CreateMatchesNotificationHandler : INotificationHandler<CreateMatchesNotification>
+public class CreateMatchesNotificationHandler(AppDbContext dbContext) : INotificationHandler<CreateMatchesNotification>
 {
-    private readonly AppDbContext _dbContext;
-
-    public CreateMatchesNotificationHandler(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task Handle(CreateMatchesNotification notification, CancellationToken cancellationToken)
     {
-        var invoicesToMatch = await _dbContext
+        var invoicesToMatch = await dbContext
             .Invoices
             .Where(i => i.CompanyId == notification.CompanyId && i.Match == null)
             .ToListAsync(cancellationToken);
 
-        _dbContext.Matches.AddRange(
+        dbContext.Matches.AddRange(
             invoicesToMatch.Select(x => new Match
             {
                 CategoryId = notification.CategoryId,
@@ -25,6 +18,6 @@ public class CreateMatchesNotificationHandler : INotificationHandler<CreateMatch
             })
         );
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

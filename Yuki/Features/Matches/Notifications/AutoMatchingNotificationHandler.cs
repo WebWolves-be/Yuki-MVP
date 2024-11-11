@@ -1,17 +1,10 @@
 ﻿namespace Yuki.Features.Matches.Notifications;
 
-public class AutoMatchingNotificationHandler : INotificationHandler<AutoMatchingNotification>
+public class AutoMatchingNotificationHandler(AppDbContext dbContext) : INotificationHandler<AutoMatchingNotification>
 {
-    private readonly AppDbContext _dbContext;
-
-    public AutoMatchingNotificationHandler(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task Handle(AutoMatchingNotification notification, CancellationToken cancellationToken)
     {
-        var invoicesToMatch = await _dbContext
+        var invoicesToMatch = await dbContext
             .Invoices
             .Where(i => i.Match == null)
             .ToListAsync(cancellationToken);
@@ -21,14 +14,14 @@ public class AutoMatchingNotificationHandler : INotificationHandler<AutoMatching
             .Distinct()
             .ToList();
 
-        var rules = await _dbContext
+        var rules = await dbContext
             .Rules
             .Where(r => companyIds.Contains(r.CompanyId))
             .ToListAsync(cancellationToken);
 
         foreach (var rule in rules)
         {
-            _dbContext.Matches.AddRange(
+            dbContext.Matches.AddRange(
                 invoicesToMatch
                     .Where(x => x.CompanyId == rule.CompanyId)
                     .Select(x => new Match
@@ -40,6 +33,6 @@ public class AutoMatchingNotificationHandler : INotificationHandler<AutoMatching
             );
         }
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

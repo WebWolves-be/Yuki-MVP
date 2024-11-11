@@ -103,5 +103,14 @@
     <Compile Update="Features\Invoices\GetInvoices\QueryHandler.cs">
       <DependentUpon>Query.cs</DependentUpon>
     </Compile>
+    <Compile Update="Features\Matches\CreateMatch\Request.cs">
+      <DependentUpon>Endpoint.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Matches\CreateMatch\CommandResult.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Matches\CreateMatch\CommandHandler.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

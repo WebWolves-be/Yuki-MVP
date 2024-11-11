@@ -1,7 +1,10 @@
 <div class="companies">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Bedrijven</mat-card-title>
+      <mat-card-title>
+        Bedrijven
+        <mat-chip>{{ (companiesWithoutRule$ | async)?.length }}</mat-chip>
+      </mat-card-title>
       <mat-card-subtitle>Deze bedrijven moeten nog gelinked worden aan een categorie</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>

@@ -11,6 +11,8 @@ public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
     
     public async Task<Result<QueryResult>> Handle(Query request, CancellationToken cancellationToken)
     {
+        // Also exclude companies that are linked via invoice
+        
         var companies = await _dbContext
             .Companies
             .AsNoTracking()
