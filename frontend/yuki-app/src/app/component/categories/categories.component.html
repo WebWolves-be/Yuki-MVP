@@ -1,8 +1,12 @@
 <div class="categories">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="categories__title">
         Categorieën
+        <button mat-flat-button color="primary" (click)="onAddCategory(null)">
+          <mat-icon>add</mat-icon>
+          Categorie
+        </button>
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -17,24 +21,21 @@
             <button mat-icon-button matTreeNodeToggle
                     [attr.aria-label]="'Toggle ' + node.name">
               <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
               </mat-icon>
             </button>
             <app-category-tree-node [categoryTreeNode]="node" [expandable]="true"></app-category-tree-node>
           </div>
-
           <div [class.categories__tree--invisible]="!treeControl.isExpanded(node)"
                role="group">
             <ng-container matTreeNodeOutlet></ng-container>
           </div>
         </mat-nested-tree-node>
       </mat-tree>
+      <mat-divider class="categories__divider"></mat-divider>
+      <div class="categories__total">
+        € {{ totalAmount | number:'1.2-2':'nl-BE' }}
+      </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-flat-button color="primary" (click)="onAddCategory(null)">
-        <mat-icon>add</mat-icon>
-        Categorie
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>

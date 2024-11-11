@@ -1,4 +1,6 @@
-﻿namespace Yuki.Features.Invoices;
+﻿using Yuki.Features.Invoices.Yuki;
+
+namespace Yuki.Features.Invoices;
 
 public static class DependencyInjection
 {

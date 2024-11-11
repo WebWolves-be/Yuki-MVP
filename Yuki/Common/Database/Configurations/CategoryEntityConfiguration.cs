@@ -29,6 +29,6 @@ public sealed class CategoryEntityConfiguration : BaseEntityConfiguration<Catego
             .WithOne(m => m.Category)
             .HasForeignKey(m => m.CategoryId)
             .IsRequired(false)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

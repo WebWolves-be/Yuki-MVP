@@ -16,7 +16,7 @@ public sealed class RuleEntityConfiguration : BaseEntityConfiguration<Rule>
         
         builder
             .HasOne(r => r.Category)
-            .WithOne()
+            .WithMany()
             .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
     }

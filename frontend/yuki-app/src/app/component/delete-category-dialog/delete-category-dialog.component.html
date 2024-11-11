@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Verwijderen categorie</h2>
+<mat-dialog-content class="mat-typography">
+  <p>Ben je zeker dat je categorie <b>{{data.name}}</b> en al zijn sub categorieën wilt verwijderen?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>
+    <mat-icon>cancel</mat-icon>
+    Annuleren
+  </button>
+  <button mat-flat-button color="warn" cdkFocusInitial (click)="onDelete()">
+    <mat-icon>save</mat-icon>
+    Verwijderen
+  </button>
+</mat-dialog-actions>

@@ -7,6 +7,8 @@ import {Observable} from "rxjs";
 export class FacadeService {
 
   categoryTreeNodes$ = this.state.categoryTreeNodes$;
+  categoryPaths$ = this.state.categoryPaths$;
+  companiesWithoutRule$ = this.state.companiesWithoutRule$;
 
   constructor(
     public repo: RepositoryService,
@@ -19,7 +21,27 @@ export class FacadeService {
     })
   }
 
-  saveCategory(name: string, parentId: number | null): Observable<boolean> {
-    return this.repo.saveCategory(name, parentId);
+  addCategory(name: string, parentId: number | null): Observable<boolean> {
+    return this.repo.addCategory(name, parentId);
+  }
+
+  deleteCategory(categoryId: number): Observable<boolean> {
+    return this.repo.deleteCategory(categoryId);
+  }
+
+  getCategoryPaths(): void {
+    this.repo.getCategoryPaths().subscribe(categoryPaths => {
+      this.state.setCategoryPaths(categoryPaths);
+    })
+  }
+
+  getCompaniesWithoutRule(): void {
+    this.repo.getCompaniesWithoutRule().subscribe(companies => {
+      this.state.setCompaniesWithoutRule(companies);
+    })
+  }
+
+  addRule(companyId: number, categoryId: number): Observable<boolean> {
+    return this.repo.addRule(companyId, categoryId);
   }
 }

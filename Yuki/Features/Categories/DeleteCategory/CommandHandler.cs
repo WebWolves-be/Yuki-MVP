@@ -1,4 +1,6 @@
-﻿namespace Yuki.Features.Categories.DeleteCategory;
+﻿using Ardalis.GuardClauses;
+
+namespace Yuki.Features.Categories.DeleteCategory;
 
 public class CommandHandler : IRequestHandler<Command, Result<CommandResult>>
 {
@@ -13,13 +15,10 @@ public class CommandHandler : IRequestHandler<Command, Result<CommandResult>>
     {
         var category = await _dbContext
             .Categories
-            .FindAsync(new object?[] { request.Id, cancellationToken }, cancellationToken: cancellationToken);
+            .SingleOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken: cancellationToken);
 
-        if (category is null)
-        {
-            throw new NullReferenceException("Category is not found!");
-        }
-
+        Guard.Against.Null(category, nameof(category), $"Category with id {request.CategoryId} is not found!");
+        
         _dbContext.Categories.Remove(category);
 
         await _dbContext.SaveChangesAsync(cancellationToken);

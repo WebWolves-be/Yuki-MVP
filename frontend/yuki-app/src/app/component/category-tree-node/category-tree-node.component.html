@@ -1,12 +1,16 @@
 <div class="node">
   <div class="node__title">
-    <div class="node__name">
-      {{categoryTreeNode.name}}
+    <div class="node__name" [ngClass]="{ 'node__name--padding' : !expandable }">
+      {{ categoryTreeNode.name }}
     </div>
     <div class="node__amount">
       €
-      <ng-container *ngIf="expandable">{{categoryTreeNode.totalAmountOfChildren}}</ng-container>
-      <ng-container *ngIf="!expandable">{{categoryTreeNode.totalAmount}}</ng-container>
+      <ng-container *ngIf="expandable">
+        {{ categoryTreeNode.totalAmountOfChildren | number:'1.2-2':'nl-BE' }}
+      </ng-container>
+      <ng-container *ngIf="!expandable">
+        {{ categoryTreeNode.totalAmount | number:'1.2-2':'nl-BE' }}
+      </ng-container>
     </div>
   </div>
   <div class="node__menu">
@@ -19,7 +23,7 @@
       <mat-icon>add</mat-icon>
       <span>Toevoegen</span>
     </button>
-    <button mat-menu-item (click)="onDelete()">
+    <button mat-menu-item [disabled]="categoryTreeNode.children.length > 0" (click)="onDelete()">
       <mat-icon>delete_forever</mat-icon>
       <span>Verwijderen</span>
     </button>

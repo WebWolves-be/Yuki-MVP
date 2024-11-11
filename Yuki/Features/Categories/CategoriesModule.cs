@@ -1,4 +1,6 @@
-﻿namespace Yuki.Features.Categories;
+﻿using Yuki.Features.Categories.GetCategoryPaths;
+
+namespace Yuki.Features.Categories;
 
 public class CategoriesModule : CarterModule
 {
@@ -10,7 +12,8 @@ public class CategoriesModule : CarterModule
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGetAllCategoriesForTreeViewEndpoint();
-        app.MapGetDeepestCategoriesEndpoint();
+        app.MapGetCategoryPathsEndpoint();
         app.MapCreateCategoryEndpoint();
+        app.MapDeleteCategoryEndpoint();
     }
 }

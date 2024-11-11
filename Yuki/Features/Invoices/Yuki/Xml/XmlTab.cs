@@ -1,7 +1,7 @@
-namespace Yuki.Features.Invoices.GetInvoicesFromYuki.Xml;
+namespace Yuki.Features.Invoices.Yuki.Xml;
 
-[XmlRoot(ElementName = "Folder")]
-public class XmlFolder
+[XmlRoot(ElementName = "Tab")]
+public class XmlTab
 {
     [XmlAttribute(AttributeName = "ID")] public int ID { get; set; }
 

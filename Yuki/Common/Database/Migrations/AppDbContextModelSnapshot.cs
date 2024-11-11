@@ -198,7 +198,7 @@ namespace Yuki.Common.Database.Migrations
                     b.HasOne("Yuki.Common.Entities.Company", "Company")
                         .WithMany("Invoices")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -209,13 +209,13 @@ namespace Yuki.Common.Database.Migrations
                     b.HasOne("Yuki.Common.Entities.Category", "Category")
                         .WithMany("Matches")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Yuki.Common.Entities.Invoice", "Invoice")
                         .WithOne("Match")
                         .HasForeignKey("Yuki.Common.Entities.Match", "InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");

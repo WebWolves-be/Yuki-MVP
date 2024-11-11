@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -15,6 +15,7 @@ import {MatInputModule} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {FacadeService} from "../../facade/facade.service";
 import {SnackBarService} from "../../service/snack-bar.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -34,7 +35,9 @@ import {SnackBarService} from "../../service/snack-bar.service";
   templateUrl: './add-category-dialog.component.html',
   styleUrl: './add-category-dialog.component.scss'
 })
-export class AddCategoryDialogComponent {
+export class AddCategoryDialogComponent implements OnDestroy {
+
+  private destroyed$$ = new Subject();
 
   form = new FormGroup({
     name: new FormControl<string>("", [Validators.required, Validators.maxLength(100)])
@@ -47,15 +50,22 @@ export class AddCategoryDialogComponent {
     private snackBar: SnackBarService) {
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$$.next(null);
+    this.destroyed$$.complete();
+  }
+
   onSave(): void {
     if (this.form.controls.name.value) {
-      this.facade.saveCategory(this.form.controls.name.value, this.data.parentId).subscribe(success => {
-        if (success) {
-          this.snackBar.openSuccess("Categorie is toegevoegd!")
-          this.facade.getCategoryTreeNodes();
-          this.dialogRef.close();
-        }
-      });
+      this.facade.addCategory(this.form.controls.name.value, this.data.parentId)
+        .pipe(takeUntil(this.destroyed$$))
+        .subscribe(success => {
+          if (success) {
+            this.snackBar.openSuccess("Categorie is toegevoegd!")
+            this.facade.getCategoryTreeNodes();
+            this.dialogRef.close();
+          }
+        });
     }
   }
 }

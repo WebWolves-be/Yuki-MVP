@@ -12,13 +12,14 @@ public sealed class MatchEntityConfiguration : BaseEntityConfiguration<Match>
             .HasOne(m => m.Category)
             .WithMany(c => c.Matches)
             .HasForeignKey(m => m.CategoryId)
-            .OnDelete(DeleteBehavior.NoAction)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
         
         builder
             .HasOne(m => m.Invoice)
             .WithOne(i => i.Match)
             .HasForeignKey<Match>(m => m.InvoiceId)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
         
         builder

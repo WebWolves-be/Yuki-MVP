@@ -1,11 +1,7 @@
 ﻿namespace Yuki.Common.Database;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -13,13 +9,13 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
     
-    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Category> Categories => Set<Category>();
     
-    public DbSet<Company> Companies { get; set; } = null!;
+    public DbSet<Company> Companies => Set<Company>();
     
-    public DbSet<Invoice> Invoices { get; set; } = null!;
+    public DbSet<Invoice> Invoices => Set<Invoice>();
     
-    public DbSet<Match> Matches { get; set; } = null!;
+    public DbSet<Match> Matches => Set<Match>();
     
-    public DbSet<Rule> Rules { get; set; } = null!;
+    public DbSet<Rule> Rules => Set<Rule>();
 }

@@ -1,3 +1,3 @@
 ﻿namespace Yuki.Features.Categories.DeleteCategory;
 
-public record Command(int Id) : IRequest<Result<CommandResult>>;
+public record Command(int CategoryId) : IRequest<Result<CommandResult>>;

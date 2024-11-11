@@ -3,9 +3,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {CategoryTreeNode} from "../../model/category-tree-node.interface";
-import {NgIf} from "@angular/common";
+import {DecimalPipe, NgClass, NgIf} from "@angular/common";
 import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {DeleteCategoryDialogComponent} from "../delete-category-dialog/delete-category-dialog.component";
 
 @Component({
   selector: 'app-category-tree-node',
@@ -14,7 +15,9 @@ import {MatDialog} from "@angular/material/dialog";
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
-    NgIf
+    NgIf,
+    DecimalPipe,
+    NgClass
   ],
   templateUrl: './category-tree-node.component.html',
   styleUrl: './category-tree-node.component.scss'
@@ -36,6 +39,11 @@ export class CategoryTreeNodeComponent {
   }
 
   onDelete(): void {
-
+    this.dialog.open(DeleteCategoryDialogComponent, {
+      data: {
+        categoryId: this.categoryTreeNode.id,
+        name: this.categoryTreeNode.name
+      },
+    });
   }
 }

@@ -11,12 +11,20 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__name {
+    &--padding {
+      padding-left: 20px;
+    }
   }
 
   &__amount {
     display: flex;
     align-items: center;
-    font-weight: 600;
     color: #ff4081;
+    margin-right: 10px;
   }
 }

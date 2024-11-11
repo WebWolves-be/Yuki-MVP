@@ -1,4 +1,4 @@
-﻿namespace Yuki.Features.Invoices.GetInvoicesFromYuki;
+﻿namespace Yuki.Features.Invoices.Yuki;
 
 public class YukiBackgroundJobSetup : IConfigureOptions<QuartzOptions>
 {

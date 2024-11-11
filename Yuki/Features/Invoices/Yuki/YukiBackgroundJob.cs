@@ -1,6 +1,7 @@
-﻿using XmlDocument = Yuki.Features.Invoices.GetInvoicesFromYuki.Xml.XmlDocument;
+﻿using Yuki.Features.Invoices.Yuki.Xml;
+using XmlDocument = Yuki.Features.Invoices.Yuki.Xml.XmlDocument;
 
-namespace Yuki.Features.Invoices.GetInvoicesFromYuki;
+namespace Yuki.Features.Invoices.Yuki;
 
 [DisallowConcurrentExecution]
 public class YukiBackgroundJob : IJob
@@ -33,17 +34,25 @@ public class YukiBackgroundJob : IJob
         await CleanUp(xmlDocument);
 
         await _mediator.Publish(new AutoMatchingNotification());
-        
+
         _logger.LogInformation("YukiBackgroundJob Finished on {UtcNow}!", DateTime.UtcNow);
     }
-    
+
     private async Task<XmlDocuments?> GetDocumentsFromYukiSoapClient()
     {
         var client = new ArchiveSoapClient(ArchiveSoapClient.EndpointConfiguration.ArchiveSoap);
         var sessionId = await client.AuthenticateAsync("cb4389d0-95e7-4866-b213-03d5b2ec280b");
 
-        var documents = await client.DocumentsInFolderAsync(sessionId, 1, DocumentSortOrder.CreatedAsc,
-            new DateTime(2023, 1, 1), new DateTime(2023, 12, 31), 10000, 0);
+        //var year = DateTime.Today.Year - 1;
+
+        var documents = await client.DocumentsInFolderAsync(
+            sessionId,
+            1,
+            DocumentSortOrder.CreatedAsc,
+            new DateTime(DateTime.Today.Year, 1, 1),
+            new DateTime(DateTime.Today.Year, 12, 31),
+            100000,
+            0);
 
         var serializer = new XmlSerializer(typeof(XmlDocuments));
 
@@ -54,14 +63,14 @@ public class YukiBackgroundJob : IJob
 
         return result;
     }
-    
+
     private async Task ProcessInvoices(XmlDocuments xmlDocument)
     {
         //todo: parse double to decimal and keep precision
-        
+
         var createdCounter = 0;
         var updatedCounter = 0;
-        
+
         foreach (var document in xmlDocument.Document)
         {
             if (string.IsNullOrEmpty(document.ContactName))
@@ -69,7 +78,13 @@ public class YukiBackgroundJob : IJob
                 _logger.LogInformation("Document with ID {DocumentId} has empty contact name", document.ID);
                 continue;
             }
-            
+
+            if (string.IsNullOrEmpty(document.Subject))
+            {
+                _logger.LogInformation("Document with ID {DocumentId} has empty subject", document.ID);
+                continue;
+            }
+
             var existingInvoice = await _dbContext
                 .Invoices
                 .Where(x => x.YukiKey == Guid.Parse(document.ID))
@@ -101,9 +116,9 @@ public class YukiBackgroundJob : IJob
 
                 updatedCounter++;
             }
+            
+            await _dbContext.SaveChangesAsync();
         }
-        
-        await _dbContext.SaveChangesAsync();
 
         _logger.LogInformation("{Created} Created Invoices", createdCounter);
         _logger.LogInformation("{Updated} Updated Invoices", updatedCounter);
@@ -112,14 +127,14 @@ public class YukiBackgroundJob : IJob
     private async Task<Company> GetCompany(XmlDocument document)
     {
         var contactName = document.ContactName.Trim();
-        
+
         var existingCompany = await _dbContext
             .Companies
             .Where(x => x.Name == contactName)
             .SingleOrDefaultAsync();
 
         Company? company;
-            
+
         if (existingCompany is null)
         {
             company = new Company
@@ -139,7 +154,7 @@ public class YukiBackgroundJob : IJob
     {
         //todo: if company from deleted invoice has no more invoices, delete company as well
         //todo: also clean up rules if company is deleted
-        
+
         var allExistingInvoices = await _dbContext
             .Invoices
             .Select(i => i.YukiKey)

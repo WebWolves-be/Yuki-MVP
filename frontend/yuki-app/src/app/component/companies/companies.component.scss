@@ -1,0 +1,17 @@
+.companies {
+  margin-bottom: 25px;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+      color: #ff4081;
+    }
+  }
+
+  .mdc-list-item {
+    padding: 0;
+  }
+}

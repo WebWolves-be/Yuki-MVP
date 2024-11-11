@@ -1,4 +1,4 @@
-﻿namespace Yuki.Features.Invoices.GetInvoicesFromYuki.Xml;
+﻿namespace Yuki.Features.Invoices.Yuki.Xml;
 
 [XmlRoot(ElementName = "Documents")]
 public class XmlDocuments

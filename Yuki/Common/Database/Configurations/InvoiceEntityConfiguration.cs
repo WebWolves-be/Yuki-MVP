@@ -13,7 +13,7 @@ public sealed class InvoiceEntityConfiguration : BaseEntityConfiguration<Invoice
             .WithMany(c => c.Invoices)
             .HasForeignKey(i => i.CompanyId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder
             .Property(i => i.YukiKey)

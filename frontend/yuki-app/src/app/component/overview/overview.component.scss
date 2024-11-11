@@ -3,7 +3,11 @@
   gap: 25px;
   padding: 15px;
 
-  &__categories {
+  &__left {
     flex: 1;
+  }
+
+  &__right {
+    width: 50%;
   }
 }

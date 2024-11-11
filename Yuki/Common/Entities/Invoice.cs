@@ -22,4 +22,6 @@ public class Invoice : IBaseEntity
     public DateOnly Date { get; set; }
     
     public DateTime? LastModified { get; set; }
+
+    public decimal TotalAmount => Amount + VatAmount;
 }
