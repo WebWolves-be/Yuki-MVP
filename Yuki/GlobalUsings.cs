@@ -21,10 +21,6 @@ global using Yuki.Features.Companies.UpdateCompany;
 global using Yuki.Features.Rules.CreateRule;
 
 global using Yuki.Features.Matches.Notifications;
-
-global using Yuki.Features.Invoices.GetAllInvoices;
-global using Yuki.Features.Invoices.GetAllInvoices.Model;
-
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -46,4 +42,7 @@ global using MediatR;
 
 global using FluentValidation;
 global using FluentValidation.Results;
+global using Yuki.Features.Invoices.GetAllInvoicesWithoutMatch;
+global using Yuki.Features.Invoices.GetAllInvoicesWithoutMatch.Model;
 global using Yuki.Features.Matches.CreateMatch;
+global using Yuki.Features.Matches.GetAllMatchesFromCategory.Model;

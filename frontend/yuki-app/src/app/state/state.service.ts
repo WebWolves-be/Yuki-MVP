@@ -4,6 +4,7 @@ import {CategoryTreeNode} from "../model/category-tree-node.interface";
 import {Company} from "../model/company.interface";
 import {CategoryPath} from "../model/category-path.interface";
 import {Invoice} from "../model/invoice.interface";
+import {Match} from "../model/match.interface";
 
 @Injectable({providedIn: "root"})
 export class StateService {
@@ -16,8 +17,11 @@ export class StateService {
   private companiesWithoutRule$$ = new BehaviorSubject<Company[] | null>(null);
   companiesWithoutRule$ = this.companiesWithoutRule$$.asObservable();
 
-  private invoices$$ = new BehaviorSubject<Invoice[] | null>(null);
-  invoices$ = this.invoices$$.asObservable();
+  private invoicesWithoutMatch$$ = new BehaviorSubject<Invoice[] | null>(null);
+  invoicesWithoutMatch$ = this.invoicesWithoutMatch$$.asObservable();
+
+  private matchesFromCategory$$ = new BehaviorSubject<Match[] | null>(null);
+  matchesFromCategory$ = this.matchesFromCategory$$.asObservable();
 
   setCategoryTreeNodes(categoryTreeNodes: CategoryTreeNode[]): void {
     this.categoryTreeNodes$$.next(categoryTreeNodes);
@@ -31,7 +35,11 @@ export class StateService {
     this.companiesWithoutRule$$.next(companies);
   }
 
-  setInvoices(invoices: Invoice[]): void {
-    this.invoices$$.next(invoices);
+  setInvoicesWithoutMatch(invoices: Invoice[]): void {
+    this.invoicesWithoutMatch$$.next(invoices);
+  }
+
+  setMatchesFromCategory(matches: Match[]): void {
+    this.matchesFromCategory$$.next(matches);
   }
 }

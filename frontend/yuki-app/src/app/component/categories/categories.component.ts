@@ -12,6 +12,7 @@ import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-di
 import {MatMenuModule} from "@angular/material/menu";
 import {CategoryTreeNodeComponent} from "../category-tree-node/category-tree-node.component";
 import {MatDividerModule} from "@angular/material/divider";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-categories',
@@ -26,7 +27,8 @@ import {MatDividerModule} from "@angular/material/divider";
     MatMenuModule,
     CategoryTreeNodeComponent,
     MatDividerModule,
-    DecimalPipe
+    DecimalPipe,
+    MatProgressSpinnerModule
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'

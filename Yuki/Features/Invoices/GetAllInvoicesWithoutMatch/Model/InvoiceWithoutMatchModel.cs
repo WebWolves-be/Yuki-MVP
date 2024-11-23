@@ -1,6 +1,7 @@
-﻿namespace Yuki.Features.Invoices.GetAllInvoices.Model;
+﻿namespace Yuki.Features.Invoices.GetAllInvoicesWithoutMatch.Model;
 
-public record InvoiceModel(
+public record InvoiceWithoutMatchModel(
+    int Id,
     Guid YukiKey,
     string CompanyName,
     string? CompanyAlias,

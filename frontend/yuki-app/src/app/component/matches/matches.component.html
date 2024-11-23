@@ -1,0 +1,76 @@
+<div class="matches">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Matches
+        <mat-chip>{{ (matchesFromCategory$ | async)?.length }}</mat-chip>
+      </mat-card-title>
+      <mat-card-subtitle>Dit zijn alle facturen die gematched zijn met de categorie <span
+        class="matches__category-name">{{ categoryName }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-spinner *ngIf="!(matchesFromCategory$ | async)"></mat-spinner>
+
+      <table mat-table [dataSource]="(matchesFromCategory$ | async) ?? []">
+
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef>Bedrijf</th>
+          <td mat-cell *matCellDef="let match"> {{ match.invoiceCompanyName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef>Onderwerp</th>
+          <td mat-cell *matCellDef="let match"> {{ match.invoiceSubject }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Bedrag</th>
+          <td mat-cell *matCellDef="let match"> € {{ match.invoiceAmount | number:'1.2-2':'nl-BE' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Datum</th>
+          <td mat-cell *matCellDef="let match">{{ match.invoiceDate | date:'dd-MM-yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="exception">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell
+              *matCellDef="let match">{{ match.isExceptionFromRule ? 'Gematched op factuur' : 'Gematched op bedrijf' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let match">
+            <!--            <div class="node__menu">-->
+            <!--              <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">-->
+            <!--                <mat-icon>more_vert</mat-icon>-->
+            <!--              </button>-->
+            <!--            </div>-->
+            <!--            <mat-menu #menu="matMenu">-->
+            <!--              <button mat-menu-item (click)="onShow(invoice)">-->
+            <!--                <mat-icon>search</mat-icon>-->
+            <!--                Bekijken-->
+            <!--              </button>-->
+            <!--              <button mat-menu-item (click)="onLink(invoice)">-->
+            <!--                <mat-icon>add_link</mat-icon>-->
+            <!--                Linken-->
+            <!--              </button>-->
+            <!--            </mat-menu>-->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let invoice; columns: displayedColumns;"></tr>
+      </table>
+
+      <button mat-stroked-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Ga terug
+      </button>
+
+    </mat-card-content>
+  </mat-card>
+</div>

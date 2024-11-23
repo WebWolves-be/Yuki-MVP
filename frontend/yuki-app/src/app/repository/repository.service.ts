@@ -9,6 +9,8 @@ import {CategoryPath} from "../model/category-path.interface";
 import {CategoryPathResponse} from "../model/category-path-response.interface";
 import {Invoice} from "../model/invoice.interface";
 import {InvoicesResponse} from "../model/invoices-response.interface";
+import {Match} from "../model/match.interface";
+import {MatchesResponse} from "../model/matches-response.interface";
 
 @Injectable({providedIn: "root"})
 export class RepositoryService {
@@ -87,9 +89,32 @@ export class RepositoryService {
       );
   }
 
-  getInvoices(): Observable<Invoice[]> {
-    return this.httpClient.get<InvoicesResponse>(`${this.baseUrl}/invoices`).pipe(
+  getInvoicesWithoutMatch(): Observable<Invoice[]> {
+    return this.httpClient.get<InvoicesResponse>(`${this.baseUrl}/invoices/without-match`).pipe(
       map(response => response.invoices as Invoice[]),
+      catchError(err => {
+        alert("OOPS, HTTP ALERT!");
+        return of([]);
+      })
+    );
+  }
+
+  addMatch(invoiceId: number, categoryId: number): Observable<boolean> {
+    return this.httpClient.post(`${this.baseUrl}/matches`, {invoiceId: invoiceId, categoryId: categoryId})
+      .pipe(
+        map(response => {
+          return true
+        }),
+        catchError(() => {
+          //todo: show form validation messages
+          return of(false);
+        })
+      );
+  }
+
+  getMatchesFromCategory(categoryId: number): Observable<Match[]> {
+    return this.httpClient.get<MatchesResponse>(`${this.baseUrl}/matches/from-category?categoryId=${categoryId}`).pipe(
+      map(response => response.matches as Match[]),
       catchError(err => {
         alert("OOPS, HTTP ALERT!");
         return of([]);

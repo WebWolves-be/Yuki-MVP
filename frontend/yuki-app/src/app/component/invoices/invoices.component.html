@@ -3,12 +3,14 @@
     <mat-card-header>
       <mat-card-title>
         Facturen
-        <mat-chip>{{ (invoices$ | async)?.length }}</mat-chip>
+        <mat-chip>{{ (invoicesWithoutMatch$ | async)?.length }}</mat-chip>
       </mat-card-title>
       <mat-card-subtitle>Deze facturen moeten nog gelinked worden aan een categorie</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <table mat-table [dataSource]="(invoices$ | async) ?? []">
+      <mat-spinner *ngIf="!(invoicesWithoutMatch$ | async)"></mat-spinner>
+      
+      <table mat-table [dataSource]="(invoicesWithoutMatch$ | async) ?? []">
 
         <ng-container matColumnDef="company">
           <th mat-header-cell *matHeaderCellDef>Bedrijf</th>

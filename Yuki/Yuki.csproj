@@ -112,5 +112,17 @@
     <Compile Update="Features\Matches\CreateMatch\CommandHandler.cs">
       <DependentUpon>Command.cs</DependentUpon>
     </Compile>
+    <Compile Update="Features\Invoices\GetAllInvoicesWithoutMatch\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Invoices\GetAllInvoicesWithoutMatch\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Invoices\GetAllInvoicesFromCategory\QueryResult.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Features\Invoices\GetAllInvoicesFromCategory\QueryHandler.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

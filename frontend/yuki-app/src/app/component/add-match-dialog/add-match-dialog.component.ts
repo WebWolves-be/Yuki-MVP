@@ -1,4 +1,7 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {AsyncPipe, NgIf} from "@angular/common";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatButtonModule} from "@angular/material/button";
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -7,37 +10,36 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {Subject, takeUntil} from "rxjs";
 import {FacadeService} from "../../facade/facade.service";
 import {SnackBarService} from "../../service/snack-bar.service";
-import {Subject, takeUntil} from "rxjs";
-import {MatSelectModule} from "@angular/material/select";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatInputModule} from "@angular/material/input";
 
 @Component({
-  selector: 'app-add-rule-dialog',
+  selector: 'app-add-match-dialog',
   standalone: true,
   imports: [
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogTitle,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogClose,
-    MatSelectModule,
-    MatInputModule,
     AsyncPipe,
+    FormsModule,
+    MatButtonModule,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogTitle,
+    MatFormFieldModule,
+    MatIconModule,
+    MatOptionModule,
+    MatSelectModule,
     NgIf,
-    NgForOf,
     ReactiveFormsModule
   ],
-  templateUrl: './add-rule-dialog.component.html',
-  styleUrl: './add-rule-dialog.component.scss'
+  templateUrl: './add-match-dialog.component.html',
+  styleUrl: './add-match-dialog.component.scss'
 })
-export class AddRuleDialogComponent implements OnInit, OnDestroy {
+export class AddMatchDialogComponent implements OnInit, OnDestroy {
 
   private destroyed$$ = new Subject();
 
@@ -49,7 +51,7 @@ export class AddRuleDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<AddRuleDialogComponent>,
+    public dialogRef: MatDialogRef<AddMatchDialogComponent>,
     public facade: FacadeService,
     private snackBar: SnackBarService) {
   }
@@ -65,11 +67,11 @@ export class AddRuleDialogComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     if (this.form.controls.categoryId.value) {
-      this.facade.addRule(this.data.companyId, this.form.controls.categoryId.value)
+      this.facade.addMatch(this.data.invoiceId, this.form.controls.categoryId.value)
         .pipe(takeUntil(this.destroyed$$))
         .subscribe(success => {
           if (success) {
-            this.snackBar.openSuccess("Bedrijf is gelinked!")
+            this.snackBar.openSuccess("Factuur is gelinked!")
             this.facade.getCategoryTreeNodes();
             this.facade.getCompaniesWithoutRule();
             this.facade.getInvoicesWithoutMatch();

@@ -11,7 +11,8 @@ public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
 
     public async Task<Result<QueryResult>> Handle(Query request, CancellationToken cancellationToken)
     {
-        var categories = await _dbContext.Categories
+        var categories = await _dbContext
+            .Categories
             .Include(c => c.Parent)
             .Include(c => c.Matches)
             .ThenInclude(m => m.Invoice)

@@ -8,8 +8,10 @@ import {FacadeService} from "../../facade/facade.service";
 import {MatTableModule} from "@angular/material/table";
 import {Invoice} from "../../model/invoice.interface";
 import {MatMenuModule} from "@angular/material/menu";
-import {Router} from "@angular/router";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatDialog} from "@angular/material/dialog";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AddMatchDialogComponent} from "../add-match-dialog/add-match-dialog.component";
 
 @Component({
   selector: 'app-invoices',
@@ -26,27 +28,33 @@ import {MatChipsModule} from "@angular/material/chips";
     DecimalPipe,
     DatePipe,
     MatMenuModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.scss'
 })
 export class InvoicesComponent implements OnInit {
-  invoices$ = this.facade.invoices$;
+  invoicesWithoutMatch$ = this.facade.invoicesWithoutMatch$;
 
   displayedColumns: string[] = ['company', 'subject', 'amount', 'date', 'actions'];
 
   constructor(
     public facade: FacadeService,
-    public router: Router) {
+    public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.facade.getInvoices();
+    this.facade.getInvoicesWithoutMatch();
   }
 
   onLink(invoice: Invoice): void {
-
+    this.dialog.open(AddMatchDialogComponent, {
+      data: {
+        invoiceId: invoice.id,
+        invoiceSubject: invoice.subject
+      },
+    });
   }
 
   onShow(invoice: Invoice): void {

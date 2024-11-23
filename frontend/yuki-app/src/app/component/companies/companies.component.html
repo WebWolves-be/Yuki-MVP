@@ -8,6 +8,7 @@
       <mat-card-subtitle>Deze bedrijven moeten nog gelinked worden aan een categorie</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <mat-spinner *ngIf="!(companiesWithoutRule$ | async)"></mat-spinner>
       <mat-list *ngIf="companiesWithoutRule$ | async as companiesWithoutRule">
         <mat-list-item *ngFor="let company of companiesWithoutRule">
           <div class="companies__item">

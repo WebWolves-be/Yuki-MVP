@@ -1,4 +1,4 @@
-﻿namespace Yuki.Features.Invoices.GetAllInvoices;
+﻿namespace Yuki.Features.Invoices.GetAllInvoicesWithoutMatch;
 
 public sealed record QueryHandler(AppDbContext DbContext) : IRequestHandler<Query, Result<QueryResult>>
 {
@@ -8,7 +8,8 @@ public sealed record QueryHandler(AppDbContext DbContext) : IRequestHandler<Quer
             .Invoices
             .AsNoTracking()
             .Where(x => x.Match == null)
-            .Select(x => new InvoiceModel(
+            .Select(x => new InvoiceWithoutMatchModel(
+                x.Id,
                 x.YukiKey,
                 x.Company.Name,
                 x.Company.Alias,

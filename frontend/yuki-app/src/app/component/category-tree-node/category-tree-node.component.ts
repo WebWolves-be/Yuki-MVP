@@ -7,6 +7,7 @@ import {DecimalPipe, NgClass, NgIf} from "@angular/common";
 import {AddCategoryDialogComponent} from "../add-category-dialog/add-category-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteCategoryDialogComponent} from "../delete-category-dialog/delete-category-dialog.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-category-tree-node',
@@ -26,7 +27,11 @@ export class CategoryTreeNodeComponent {
   @Input() categoryTreeNode!: CategoryTreeNode;
   @Input() expandable!: boolean;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public router: Router) {
+  }
+
+  onDetail(id: number, name: string): void {
+    void this.router.navigate(['/matches/', name, id]);
   }
 
   onAdd(): void {

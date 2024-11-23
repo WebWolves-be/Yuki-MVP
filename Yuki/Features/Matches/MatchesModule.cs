@@ -1,4 +1,6 @@
-﻿namespace Yuki.Features.Matches;
+﻿using Yuki.Features.Matches.GetAllMatchesFromCategory;
+
+namespace Yuki.Features.Matches;
 
 public class MatchesModule : CarterModule
 {
@@ -10,5 +12,6 @@ public class MatchesModule : CarterModule
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapCreateMatchEndpoint();
+        app.MapGetAllMatchesFromCategoryEndpoint();
     }
 }

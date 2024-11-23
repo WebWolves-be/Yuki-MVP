@@ -9,6 +9,6 @@ public class InvoicesModule : CarterModule
     
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGetAllInvoices();
+        app.MapGetAllInvoicesWithoutMatch();
     }
 }

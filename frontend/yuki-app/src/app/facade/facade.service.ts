@@ -9,7 +9,8 @@ export class FacadeService {
   categoryTreeNodes$ = this.state.categoryTreeNodes$;
   categoryPaths$ = this.state.categoryPaths$;
   companiesWithoutRule$ = this.state.companiesWithoutRule$;
-  invoices$ = this.state.invoices$;
+  invoicesWithoutMatch$ = this.state.invoicesWithoutMatch$;
+  matchesFromCategory$ = this.state.matchesFromCategory$;
 
   constructor(
     public repo: RepositoryService,
@@ -46,9 +47,19 @@ export class FacadeService {
     return this.repo.addRule(companyId, categoryId);
   }
 
-  getInvoices(): void {
-    this.repo.getInvoices().subscribe(invoices => {
-      this.state.setInvoices(invoices);
+  getInvoicesWithoutMatch(): void {
+    this.repo.getInvoicesWithoutMatch().subscribe(invoices => {
+      this.state.setInvoicesWithoutMatch(invoices);
+    })
+  }
+
+  addMatch(invoiceId: number, categoryId: number): Observable<boolean> {
+    return this.repo.addMatch(invoiceId, categoryId);
+  }
+
+  getMatchesFromCategory(categoryId: number): void {
+    this.repo.getMatchesFromCategory(categoryId).subscribe(matches => {
+      this.state.setMatchesFromCategory(matches);
     })
   }
 }

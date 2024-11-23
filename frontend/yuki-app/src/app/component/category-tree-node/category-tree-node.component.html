@@ -19,6 +19,12 @@
     </button>
   </div>
   <mat-menu #menu="matMenu">
+    @if (!expandable) {
+      <button mat-menu-item (click)="onDetail(categoryTreeNode.id, categoryTreeNode.name)">
+        <mat-icon>search</mat-icon>
+        <span>Detail</span>
+      </button>
+    }
     <button mat-menu-item (click)="onAdd()">
       <mat-icon>add</mat-icon>
       <span>Toevoegen</span>

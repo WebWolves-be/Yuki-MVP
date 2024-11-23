@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AddRuleDialogComponent} from "../add-rule-dialog/add-rule-dialog.component";
 import {Company} from "../../model/company.interface";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-companies',
@@ -21,7 +22,8 @@ import {MatChipsModule} from "@angular/material/chips";
     NgForOf,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './companies.component.html',
   styleUrl: './companies.component.scss'
