@@ -14,7 +14,7 @@ public sealed record QueryHandler(AppDbContext DbContext) : IRequestHandler<Quer
                 x.Company.Name,
                 x.Company.Alias,
                 x.Subject,
-                x.TotalAmount,
+                x.Amount,
                 x.Date))
             .ToListAsync(cancellationToken);
 

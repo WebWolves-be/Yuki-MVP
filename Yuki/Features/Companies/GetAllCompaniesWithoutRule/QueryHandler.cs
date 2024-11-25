@@ -11,12 +11,13 @@ public class QueryHandler : IRequestHandler<Query, Result<QueryResult>>
     
     public async Task<Result<QueryResult>> Handle(Query request, CancellationToken cancellationToken)
     {
-        // Also exclude companies that are linked via invoice
-        
         var companies = await _dbContext
             .Companies
             .AsNoTracking()
-            .Where(c => _dbContext.Rules.All(r => r.CompanyId != c.Id))
+            .Where(c => _dbContext.Rules.All(r => r.CompanyId != c.Id) &&
+                        !_dbContext.Invoices
+                            .Where(i => i.CompanyId == c.Id)
+                            .Any(i => _dbContext.Matches.Any(m => m.InvoiceId == i.Id)))
             .Select(c => new CompanyModel(c.Id, c.Name, c.Alias))
             .ToListAsync(cancellationToken);
 

@@ -13,7 +13,7 @@ public sealed class QueryHandler(AppDbContext dbContext) : IRequestHandler<Query
                 x.Invoice.Company.Name,
                 x.Invoice.Company.Alias,
                 x.Invoice.Subject,
-                x.Invoice.TotalAmount,
+                x.Invoice.Amount,
                 x.Invoice.Date,
                 x.IsExceptionFromRule))
             .ToListAsync(cancellationToken);
