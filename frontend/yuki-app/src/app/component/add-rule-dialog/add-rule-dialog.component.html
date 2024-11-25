@@ -1,8 +1,9 @@
-<h2 mat-dialog-title>Bedrijf '{{ data.companyName }}' linken aan een categorie</h2>
+<h2 mat-dialog-title>Bedrijf <b class="highlight">{{ data.companyName }}</b> linken aan een categorie</h2>
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="form">
-    <mat-form-field *ngIf="categoryPaths$ | async as categoryPaths" appearance="outline" color="accent"
-                    class="width-100">
+    <mat-form-field
+      *ngIf="categoryPaths$ | async as categoryPaths" appearance="outline" color="accent"
+      class="width-100">
       <mat-label>Kies een categorie</mat-label>
       <mat-select formControlName="categoryId">
         @for (categoryPath of categoryPaths; track categoryPath) {

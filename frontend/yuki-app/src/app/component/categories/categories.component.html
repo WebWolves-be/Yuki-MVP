@@ -13,7 +13,7 @@
       @if (dataSource.data.length === 0) {
         <mat-spinner></mat-spinner>
       } @else {
-        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="categories__tree">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [trackBy]="trackByFn" class="categories__tree">
           <!-- This is the tree node template for leaf nodes -->
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
             <app-category-tree-node [categoryTreeNode]="node" [expandable]="false"></app-category-tree-node>

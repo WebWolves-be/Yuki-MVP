@@ -43,22 +43,10 @@
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let match">
-            <!--            <div class="node__menu">-->
-            <!--              <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">-->
-            <!--                <mat-icon>more_vert</mat-icon>-->
-            <!--              </button>-->
-            <!--            </div>-->
-            <!--            <mat-menu #menu="matMenu">-->
-            <!--              <button mat-menu-item (click)="onShow(invoice)">-->
-            <!--                <mat-icon>search</mat-icon>-->
-            <!--                Bekijken-->
-            <!--              </button>-->
-            <!--              <button mat-menu-item (click)="onLink(invoice)">-->
-            <!--                <mat-icon>add_link</mat-icon>-->
-            <!--                Linken-->
-            <!--              </button>-->
-            <!--            </mat-menu>-->
+          <td mat-cell *matCellDef="let match" class="matches__actions">
+            <button mat-mini-fab color="accent" (click)="goToYuki(match)">
+              <mat-icon>search</mat-icon>
+            </button>
           </td>
         </ng-container>
 

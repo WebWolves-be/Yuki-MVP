@@ -48,6 +48,10 @@ export class CategoriesComponent implements OnInit {
   hasChild = (_: number, node: CategoryTreeNode) =>
     !!node.children && node.children.length > 0;
 
+  expansionKeyFn = (dataNode: CategoryTreeNode) => dataNode.id;
+
+  trackByFn = (index: number, dataNode: CategoryTreeNode) => this.expansionKeyFn(dataNode);
+
   ngOnInit(): void {
     this.facade.getCategoryTreeNodes();
 

@@ -11,6 +11,7 @@ import {FacadeService} from "../../facade/facade.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject, takeUntil} from "rxjs";
 import {MatDialogClose} from "@angular/material/dialog";
+import {Match} from "../../model/match.interface";
 
 @Component({
   selector: 'app-matches',
@@ -61,5 +62,9 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     void this.router.navigate([""])
+  }
+
+  goToYuki(match: Match): void {
+    window.open(`https://webwolves.yukiworks.be/domain/purchase/aspx/Document.aspx?ID=${match.invoiceYukiKey}`, '_blank');
   }
 }
